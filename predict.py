@@ -21,7 +21,8 @@ def preprocess_image(pil_image):
 
 if __name__ == "__main__":
     ########################### Magic code line #################################
-    checkpoint = torch.load('MBN_epoch_1_loss_0.47.pth',
+    convert = {0: 'la', 1: 'dam', 2: 'keo'}
+    checkpoint = torch.load('MBN_epoch_1_loss_0.10.pth',
                             map_location=torch.device('cpu'))
     # print(checkpoint)
     model = MobileNetV2(num_classes=3)
@@ -33,22 +34,22 @@ if __name__ == "__main__":
     image1 = preprocess_image(pil_image1)
     # print(image.shape)
     output = model(image1)
-    print(output)
+    # print(output)
     _, predicted = torch.max(output.data, 1)
-    print(predicted)
+    print(convert[int(predicted)])
     # Your image here
     pil_image1 = Image.open('test_data/keo.jpg')
     image1 = preprocess_image(pil_image1)
     # print(image.shape)
     output = model(image1)
-    print(output)
+    # print(output)
     _, predicted = torch.max(output.data, 1)
-    print(predicted)
+    print(convert[int(predicted)])
     # Your image here
     pil_image1 = Image.open('test_data/la.jpg')
     image1 = preprocess_image(pil_image1)
     # print(image.shape)
     output = model(image1)
-    print(output)
+    # print(output)
     _, predicted = torch.max(output.data, 1)
-    print(predicted)
+    print(convert[int(predicted)])
