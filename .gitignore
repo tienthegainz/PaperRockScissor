@@ -1,0 +1,6 @@
+test_data/
+.vscode/
+*.pth
+*.tar
+__pycache__
+*.zip
