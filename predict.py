@@ -6,15 +6,22 @@ import torch.nn.functional as F
 
 
 def preprocess_image(pil_image):
-    image = transforms.ToTensor()(pil_image).unsqueeze_(0).cpu()
-    image /= 255.00
+    val_tfms = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+    image = val_tfms(pil_image)
+    image = image.unsqueeze_(0).cpu()
+    # image /= 255.00
     image = F.interpolate(image, size=256)
     return image
 
 
 if __name__ == "__main__":
     ########################### Magic code line #################################
-    checkpoint = torch.load('MBN_epoch_1_loss_0.07.pth',
+    checkpoint = torch.load('MBN_epoch_1_loss_0.47.pth',
                             map_location=torch.device('cpu'))
     # print(checkpoint)
     model = MobileNetV2(num_classes=3)
@@ -29,19 +36,19 @@ if __name__ == "__main__":
     print(output)
     _, predicted = torch.max(output.data, 1)
     print(predicted)
-
-    pil_image2 = Image.open('test_data/keo.jpg')
-    image2 = preprocess_image(pil_image2)
+    # Your image here
+    pil_image1 = Image.open('test_data/keo.jpg')
+    image1 = preprocess_image(pil_image1)
     # print(image.shape)
-    output = model(image2)
+    output = model(image1)
     print(output)
     _, predicted = torch.max(output.data, 1)
     print(predicted)
-
-    pil_image3 = Image.open('test_data/la.jpg')
-    image3 = preprocess_image(pil_image3)
+    # Your image here
+    pil_image1 = Image.open('test_data/la.jpg')
+    image1 = preprocess_image(pil_image1)
     # print(image.shape)
-    output = model(image3)
+    output = model(image1)
     print(output)
     _, predicted = torch.max(output.data, 1)
     print(predicted)
