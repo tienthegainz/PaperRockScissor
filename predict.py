@@ -1,12 +1,15 @@
 from mobilenet_v2 import mobilenet_v2, MobileNetV2
 from PIL import Image
+import cv2
 from torchvision import transforms
 import torch
 import torch.nn.functional as F
+import time
 
 
 def preprocess_image(pil_image):
     val_tfms = transforms.Compose([
+        transforms.ToPILImage(),
         transforms.Resize((256, 256)),
         transforms.ToTensor(),
         transforms.Normalize(
@@ -30,26 +33,25 @@ if __name__ == "__main__":
     # print(model)
     model.eval()
     # Your image here
-    pil_image1 = Image.open('test_data/dam.jpg')
-    image1 = preprocess_image(pil_image1)
-    # print(image.shape)
+    # pil_image1 = Image.open('test_data/dam.jpg')
+    cv_image1 = cv2.imread('test_data/dam.jpg')
+    image1 = preprocess_image(cv_image1)
     output = model(image1)
-    # print(output)
+
     _, predicted = torch.max(output.data, 1)
     print(convert[int(predicted)])
     # Your image here
-    pil_image1 = Image.open('test_data/keo.jpg')
-    image1 = preprocess_image(pil_image1)
-    # print(image.shape)
-    output = model(image1)
-    # print(output)
-    _, predicted = torch.max(output.data, 1)
-    print(convert[int(predicted)])
-    # Your image here
-    pil_image1 = Image.open('test_data/la.jpg')
-    image1 = preprocess_image(pil_image1)
-    # print(image.shape)
-    output = model(image1)
-    # print(output)
-    _, predicted = torch.max(output.data, 1)
-    print(convert[int(predicted)])
+    # pil_image1 = Image.open('test_data/keo.jpg')
+    # t = time.time()
+    # image1 = preprocess_image(pil_image1)
+    # output = model(image1)
+    # print('Cost {} ms'.format(time.time()-t))
+    # _, predicted = torch.max(output.data, 1)
+    # print(convert[int(predicted)])
+    # # Your image here
+    # pil_image1 = Image.open('test_data/la.jpg')
+    # image1 = preprocess_image(pil_image1)
+    # output = model(image1)
+
+    # _, predicted = torch.max(output.data, 1)
+    # print(convert[int(predicted)])
